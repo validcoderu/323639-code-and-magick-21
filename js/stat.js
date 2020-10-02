@@ -5,17 +5,21 @@ var CLOUD_HEIGHT = 270;
 var CLOUD_X = 100;
 var CLOUD_Y = 10;
 var GAP = 10;
-var BAR_WIDTH = 40;
-var BAR_HEIGHT = 150;
+var COLUMN_WIDTH = 40;
+var COLUMN_HEIGHT = 150;
 var COLUMN_GAP = 50;
 var TEXT_HEIGHT = 16;
-var startPointY = 90;
-var barHeight = BAR_HEIGHT - TEXT_HEIGHT * 2;
+var START_POINT_Y = 90;
+var BAR_HEIGHT = COLUMN_HEIGHT - TEXT_HEIGHT * 2;
+
+var getRandomNumber = function (min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+};
 
 var getRandomColor = function (min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return (`hsl(240, ` + (Math.floor(Math.random() * (max - min)) + min) + `%,` + ` 50%)`);
+  return (`hsl(240, ` + getRandomNumber(min, max) + `%,` + ` 50%)`);
 };
 
 var renderCloud = function (ctx, x, y, color) {
@@ -48,14 +52,14 @@ window.renderStatistics = function (ctx, names, times) {
   var maxTime = getMaxElement(times);
 
   for (var i = 0; i < names.length; i++) {
-    ctx.fillText(Math.round(times[i]), CLOUD_X + COLUMN_GAP + (BAR_WIDTH + COLUMN_GAP) * i, startPointY + barHeight - ((times[i] * barHeight) / maxTime));
+    ctx.fillText(Math.round(times[i]), CLOUD_X + COLUMN_GAP + (COLUMN_WIDTH + COLUMN_GAP) * i, START_POINT_Y + BAR_HEIGHT - ((times[i] * BAR_HEIGHT) / maxTime));
     if (names[i] === `Вы`) {
       ctx.fillStyle = `rgba(255, 0, 0, 1)`;
     } else {
       ctx.fillStyle = getRandomColor(1, 100);
     }
-    ctx.fillRect(CLOUD_X + COLUMN_GAP + (BAR_WIDTH + COLUMN_GAP) * i, startPointY + TEXT_HEIGHT + GAP + barHeight - ((times[i] * barHeight) / maxTime), BAR_WIDTH, (times[i] * barHeight) / maxTime);
+    ctx.fillRect(CLOUD_X + COLUMN_GAP + (COLUMN_WIDTH + COLUMN_GAP) * i, START_POINT_Y + TEXT_HEIGHT + GAP + BAR_HEIGHT - ((times[i] * BAR_HEIGHT) / maxTime), COLUMN_WIDTH, (times[i] * BAR_HEIGHT) / maxTime);
     ctx.fillStyle = `#000`;
-    ctx.fillText(names[i], CLOUD_X + COLUMN_GAP + (BAR_WIDTH + COLUMN_GAP) * i, startPointY + TEXT_HEIGHT + GAP + barHeight + GAP);
+    ctx.fillText(names[i], CLOUD_X + COLUMN_GAP + (COLUMN_WIDTH + COLUMN_GAP) * i, START_POINT_Y + TEXT_HEIGHT + GAP + BAR_HEIGHT + GAP);
   }
 };
