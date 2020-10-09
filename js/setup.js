@@ -7,6 +7,10 @@ var EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var ESC_KEY = 'Escape';
 var ENTER_KEY = 'Enter';
+var SETUP_START_CORDS = {
+  x: 50,
+  y: 80
+};
 
 var getWizardFullName = function (names, surnames) {
   var wizardName = Math.floor(Math.random() * names.length);
@@ -113,6 +117,8 @@ var openPopup = function () {
 var closePopup = function () {
   setup.classList.add('hidden');
   document.removeEventListener('keydown', escPressHandler);
+  setup.style.top = SETUP_START_CORDS.y + 'px';
+  setup.style.left = SETUP_START_CORDS.x + '%';
 };
 
 setupOpen.addEventListener('click', openPopup);
@@ -142,3 +148,54 @@ submitButton.addEventListener('keydown', function (evt) {
 wizardCoat.addEventListener('click', wizardCoatClickHandler);
 wizardEyes.addEventListener('click', wizardEyesClickHandler);
 wizardFireball.addEventListener('click', wizardFireballClickHandler);
+
+var dialogHandle = setup.querySelector('.upload');
+
+dialogHandle.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var dragged = false;
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    dragged = true;
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    setup.style.top = (setup.offsetTop - shift.y) + 'px';
+    setup.style.left = (setup.offsetLeft - shift.x) + 'px';
+
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+
+    if (dragged) {
+      var onClickPreventDefault = function (clickEvt) {
+        clickEvt.preventDefault();
+        dialogHandle.removeEventListener('click', onClickPreventDefault)
+      };
+      dialogHandle.addEventListener('click', onClickPreventDefault);
+    }
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+});
