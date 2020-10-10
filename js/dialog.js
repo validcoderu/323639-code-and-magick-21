@@ -4,7 +4,7 @@
   var setup = document.querySelector('.setup');
   var usernameInput = setup.querySelector('.setup-user-name');
   var setupOpen = document.querySelector('.setup-open');
-  var setupClose = window.setup.setup.querySelector('.setup-close');
+  var setupClose = setup.querySelector('.setup-close');
 
   var escPressHandler = function (evt) {
     if (evt.key === window.constants.ESC_KEY) {

@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var setupForm = window.dialog.querySelector('.setup-wizard-form');
+  var setupForm = window.dialog.setup.querySelector('.setup-wizard-form');
   var submitButton = setupForm.querySelector('.setup-submit');
   var wizardCoat = document.querySelector('.setup-wizard .wizard-coat');
   var wizardEyes = document.querySelector('.setup-wizard .wizard-eyes');
